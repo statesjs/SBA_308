@@ -110,7 +110,7 @@ const LearnerSubmission = [
 // }
 
 function getLearnerData(LearnerSubmission) {
-  //array that holds results
+  //array that holds results ✅
   let outputLearner = [];
   let learnerSet = new Set(); //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/add
   //part 1 amke sure the id matches, otherwise throw an error
@@ -119,46 +119,85 @@ function getLearnerData(LearnerSubmission) {
       `This assignment isn't for this class! Change the Course you're submitting to!`
     );
   }
-  //find how many unique keys, put spit out that many
-  for (let i = 0; i < LearnerSubmission.length; i++) {
-    learnerSet.add(LearnerSubmission[i].learner_id);
+  //find how many unique keys, put spit out that many ✅
+  //updated with a for of loop instead,
+  for (let submission of LearnerSubmission) {
+    learnerSet.add(submission.learner_id);
   }
   console.log(learnerSet);
   //learner set is now an array holding the unique keys
-  //plug in objs to outputlearner (dynamically made so any amount of learners in compensated for)
-  //also added an avg key to take in a future value
+  //plug in objs to outputlearner (dynamically made so any amount of learners in compensated for) 🚧
+  //also added an avg key to take in a future value ✅
+  //went ahead and just added the total possible and assignment keys
   outputLearner = Array.from(learnerSet).map((id) => ({
     learner_id: id,
     avg: 0, //replace with a function
     sum: 0,
-    //add a key that will hold the assignemnts turned in
+    totalPossible: 0,
+    assignments: {},
   }));
   return outputLearner;
 }
-//make a function to push all the assignments associated with the learner into their final student obj
-function assignmentsOfLearner(AssignmentGroup, final) {
+// //make a function to push all the assignments associated with the learner into their final student obj ✅
+// function assignmentsOfLearner(AssignmentGroup, final) {
+//   for (let i = 0; i < final.length; i++) {
+//     final[i].assignments = AssignmentGroup.assignments;
+//   }
+//   return final;
+// }
+// //use to get the sum total score for each learner id and push it to final ✅
+// function getSum(LearnerSubmission, final) {
+//   for (let i = 1; i < LearnerSubmission.length; i++) {
+//     if (LearnerSubmission[i].learner_id == final[0].learner_id) {
+//       final[0].sum += LearnerSubmission[i].submission.score;
+//     } else if (LearnerSubmission[i].learner_id == final[1].learner_id) {
+//       final[1].sum += LearnerSubmission[i].submission.score;
+//     }
+//   }
+//   return final;
+// }
+//bunch the assignment assigner function, sum function, and avg function together
+function assignmentsOfLearner(AssignmentGroup, final, LearnerSubmission) {
   for (let i = 0; i < final.length; i++) {
-    final[i].assignments = AssignmentGroup.assignments;
-  }
-  return final;
-}
-//use to get the sum total score for each learner id and push it to final
-function getSum(LearnerSubmission, final) {
-  for (let i = 1; i < LearnerSubmission.length; i++) {
-    if (LearnerSubmission[i].learner_id == final[0].learner_id) {
-      final[0].sum += LearnerSubmission[i].submission.score;
-    } else if (LearnerSubmission[i].learner_id == final[1].learner_id) {
-      final[1].sum += LearnerSubmission[i].submission.score;
+    for (let j = 0; j < AssignmentGroup.assignments.length; j++) {
+      let assignment = AssignmentGroup.assignments[j];
+
+      // Search through all submissions to find a matching one
+      for (let k = 0; k < LearnerSubmission.length; k++) {
+        if (
+          LearnerSubmission[k].learner_id === final[i].learner_id &&
+          LearnerSubmission[k].assignment_id === assignment.id
+        ) {
+          // update scores
+          if (!final[i].assignments[assignment.id]) {
+            final[i].assignments[assignment.id] = 0;
+          }
+
+          // get their true grade
+          final[i].assignments[assignment.id] =
+            LearnerSubmission[k].submission.score / assignment.points_possible;
+
+          // add up sum and total poss to divide later
+          final[i].sum += LearnerSubmission[k].submission.score;
+          final[i].totalPossible += assignment.points_possible;
+        }
+      }
     }
   }
-  return final;
 }
 
+//make a function to sum total possible then divide final[x].sum and reassign final[x].avg that score
+function getAvg(final) {
+  for (let learner of final) {
+    if (learner.totalPossible > 0) {
+      learner.avg = (learner.sum / learner.totalPossible) * 100 + "%"; // Convert to percentage
+    }
+  }
+}
 let final = getLearnerData(LearnerSubmission);
-getSum(LearnerSubmission, final);
-assignmentsOfLearner(AssignmentGroup, final);
+assignmentsOfLearner(AssignmentGroup, final, LearnerSubmission);
+getAvg(final);
 console.log(final);
-console.log(final[0].learner_id);
 
 //start working on function that will add the sum of scores
 //then add the sums of total possible scores and finally divide
