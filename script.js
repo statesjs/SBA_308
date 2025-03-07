@@ -3,6 +3,7 @@ const CourseInfo = {
   id: 666,
   name: "MERN SWE",
 };
+
 //assignmentgroup obj
 const AssignmentGroup = {
   id: 2343,
@@ -134,13 +135,34 @@ function getLearnerData(LearnerSubmission) {
   }));
   return outputLearner;
 }
+//make a function to push all the assignments associated with the learner into their final student obj
+function assignmentsOfLearner(AssignmentGroup, final) {
+  for (let i = 0; i < final.length; i++) {
+    final[i].assignments = AssignmentGroup.assignments;
+  }
+  return final;
+}
+//use to get the sum total score for each learner id and push it to final
+function getSum(LearnerSubmission, final) {
+  for (let i = 1; i < LearnerSubmission.length; i++) {
+    if (LearnerSubmission[i].learner_id == final[0].learner_id) {
+      final[0].sum += LearnerSubmission[i].submission.score;
+    } else if (LearnerSubmission[i].learner_id == final[1].learner_id) {
+      final[1].sum += LearnerSubmission[i].submission.score;
+    }
+  }
+  return final;
+}
 
-const final = getLearnerData(LearnerSubmission);
+let final = getLearnerData(LearnerSubmission);
+getSum(LearnerSubmission, final);
+assignmentsOfLearner(AssignmentGroup, final);
 console.log(final);
+console.log(final[0].learner_id);
 
 //start working on function that will add the sum of scores
 //then add the sums of total possible scores and finally divide
-//
+//function should exist within the outputlearner as a value to a avg key
 //
 //
 // function avgScore (assignmentgroup, outputLearner){
