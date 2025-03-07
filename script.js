@@ -138,24 +138,7 @@ function getLearnerData(LearnerSubmission) {
   }));
   return outputLearner;
 }
-// //make a function to push all the assignments associated with the learner into their final student obj ✅
-// function assignmentsOfLearner(AssignmentGroup, final) {
-//   for (let i = 0; i < final.length; i++) {
-//     final[i].assignments = AssignmentGroup.assignments;
-//   }
-//   return final;
-// }
-// //use to get the sum total score for each learner id and push it to final ✅
-// function getSum(LearnerSubmission, final) {
-//   for (let i = 1; i < LearnerSubmission.length; i++) {
-//     if (LearnerSubmission[i].learner_id == final[0].learner_id) {
-//       final[0].sum += LearnerSubmission[i].submission.score;
-//     } else if (LearnerSubmission[i].learner_id == final[1].learner_id) {
-//       final[1].sum += LearnerSubmission[i].submission.score;
-//     }
-//   }
-//   return final;
-// }
+
 //bunch the assignment assigner function, sum function, and avg function together
 function assignmentsOfLearner(AssignmentGroup, final, LearnerSubmission) {
   for (let i = 0; i < final.length; i++) {
@@ -198,7 +181,12 @@ let final = getLearnerData(LearnerSubmission);
 assignmentsOfLearner(AssignmentGroup, final, LearnerSubmission);
 getAvg(final);
 console.log(final);
-
+// ⚠️⚠️⚠️⚠️⚠️⚠️ steps to do:
+//work on late submission functionality
+//put in a try catch
+//Use strings, numbers, and Boolean values cached within variables
+//Utilize at least one loop control keyword such as break or continue.
+//check if you named variables correctly and correct vars are used
 //start working on function that will add the sum of scores
 //then add the sums of total possible scores and finally divide
 //function should exist within the outputlearner as a value to a avg key
