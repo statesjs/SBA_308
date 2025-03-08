@@ -18,7 +18,7 @@ const AssignmentGroup = {
       id: 1,
       name: "Fundamentals",
       // the due date for the assignment
-      due_at: Date("2025-03-1"), // string,
+      due_at: Date("2025-02-1"), // string,
       // the maximum points possible for the assignment
       points_possible: 100,
     },
@@ -26,7 +26,7 @@ const AssignmentGroup = {
       id: 2,
       name: "BootStrap",
       // the due date for the assignment
-      due_at: new Date("2025-03-18"), // string,
+      due_at: new Date("2025-02-28"), // string,
       // the maximum points possible for the assignment
       points_possible: 100,
     },
@@ -34,9 +34,17 @@ const AssignmentGroup = {
       id: 3,
       name: "HTML SBA",
       // the due date for the assignment
-      due_at: Date("2025-03-10"), // string,
+      due_at: Date("2025-02-10"), // string,
       // the maximum points possible for the assignment
       points_possible: 500,
+    },
+    {
+      id: 4,
+      name: "How to make an alien planet",
+      // the due date for the assignment
+      due_at: Date("2029-02-10"), // string,
+      // the maximum points possible for the assignment
+      points_possible: 1110000,
     },
   ],
 };
@@ -47,7 +55,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 1,
     submission: {
-      submitted_at: Date("2025-03-2"),
+      submitted_at: Date("2025-02-2"),
       score: 90,
     },
   },
@@ -55,7 +63,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 2,
     submission: {
-      submitted_at: Date("2025-03-17"),
+      submitted_at: Date("2025-02-17"),
       score: 30,
     },
   },
@@ -63,7 +71,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 3,
     submission: {
-      submitted_at: Date("2025-03-10"),
+      submitted_at: Date("2025-02-10"),
       score: 480,
     },
   },
