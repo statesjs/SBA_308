@@ -18,7 +18,7 @@ const AssignmentGroup = {
       id: 1,
       name: "Fundamentals",
       // the due date for the assignment
-      due_at: Date, // string,
+      due_at: Date("2025-03-1"), // string,
       // the maximum points possible for the assignment
       points_possible: 100,
     },
@@ -26,7 +26,7 @@ const AssignmentGroup = {
       id: 2,
       name: "BootStrap",
       // the due date for the assignment
-      due_at: Date, // string,
+      due_at: new Date("2025-03-18"), // string,
       // the maximum points possible for the assignment
       points_possible: 100,
     },
@@ -34,7 +34,7 @@ const AssignmentGroup = {
       id: 3,
       name: "HTML SBA",
       // the due date for the assignment
-      due_at: Date, // string,
+      due_at: Date("2025-03-10"), // string,
       // the maximum points possible for the assignment
       points_possible: 500,
     },
@@ -47,7 +47,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 1,
     submission: {
-      submitted_at: Date, //string,
+      submitted_at: Date("2025-03-2"),
       score: 90,
     },
   },
@@ -55,7 +55,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 2,
     submission: {
-      submitted_at: Date, //string,
+      submitted_at: Date("2025-03-17"),
       score: 30,
     },
   },
@@ -63,7 +63,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 3,
     submission: {
-      submitted_at: Date, //string,
+      submitted_at: Date("2025-03-10"),
       score: 480,
     },
   },
@@ -71,7 +71,7 @@ const LearnerSubmission = [
     learner_id: 253,
     assignment_id: 1,
     submission: {
-      submitted_at: Date, //string,
+      submitted_at: Date("2025-03-1"),
       score: 20,
     },
   },
@@ -79,7 +79,7 @@ const LearnerSubmission = [
     learner_id: 253,
     assignment_id: 2,
     submission: {
-      submitted_at: Date, //string,
+      submitted_at: Date("2025-03-17"),
       score: 100,
     },
   },
@@ -87,7 +87,7 @@ const LearnerSubmission = [
     learner_id: 253,
     assignment_id: 3,
     submission: {
-      submitted_at: Date, //string,
+      submitted_at: Date("2025-03-10"),
       score: 380,
     },
   },
@@ -187,13 +187,3 @@ console.log(final);
 //Use strings, numbers, and Boolean values cached within variables
 //Utilize at least one loop control keyword such as break or continue.
 //check if you named variables correctly and correct vars are used
-//start working on function that will add the sum of scores
-//then add the sums of total possible scores and finally divide
-//function should exist within the outputlearner as a value to a avg key
-//
-//
-// function avgScore (assignmentgroup, outputLearner){
-// for (let i = 0; i < LearnerSubmission.length; i++) {
-//     if (LearnerSubmission[i].learner_id == outputLearner[i].)
-// }
-// }
