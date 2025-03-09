@@ -18,7 +18,7 @@ const AssignmentGroup = {
       id: 1,
       name: "Fundamentals",
       // the due date for the assignment
-      due_at: Date("2025-02-1"), // string,
+      due_at: new Date("2025-02-1"), // string,
       // the maximum points possible for the assignment
       points_possible: 100,
     },
@@ -34,7 +34,7 @@ const AssignmentGroup = {
       id: 3,
       name: "HTML SBA",
       // the due date for the assignment
-      due_at: Date("2025-02-10"), // string,
+      due_at: new Date("2025-02-10"), // string,
       // the maximum points possible for the assignment
       points_possible: 500,
     },
@@ -42,7 +42,7 @@ const AssignmentGroup = {
       id: 4,
       name: "How to make an alien planet",
       // the due date for the assignment
-      due_at: Date("2029-02-10"), // string,
+      due_at: new Date("2029-02-10"), // string,
       // the maximum points possible for the assignment
       points_possible: 1110000,
     },
@@ -55,7 +55,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 1,
     submission: {
-      submitted_at: Date("2025-02-2"),
+      submitted_at: new Date("2025-02-2"),
       score: 90,
     },
   },
@@ -63,7 +63,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 2,
     submission: {
-      submitted_at: Date("2025-02-17"),
+      submitted_at: new Date("2025-02-17"),
       score: 30,
     },
   },
@@ -71,7 +71,7 @@ const LearnerSubmission = [
     learner_id: 314,
     assignment_id: 3,
     submission: {
-      submitted_at: Date("2025-02-10"),
+      submitted_at: new Date("2025-02-10"),
       score: 480,
     },
   },
@@ -79,7 +79,7 @@ const LearnerSubmission = [
     learner_id: 253,
     assignment_id: 1,
     submission: {
-      submitted_at: Date("2025-03-1"),
+      submitted_at: new Date("2025-03-1"),
       score: 20,
     },
   },
@@ -87,7 +87,7 @@ const LearnerSubmission = [
     learner_id: 253,
     assignment_id: 2,
     submission: {
-      submitted_at: Date("2025-03-17"),
+      submitted_at: new Date("2025-03-17"),
       score: 100,
     },
   },
@@ -95,7 +95,7 @@ const LearnerSubmission = [
     learner_id: 253,
     assignment_id: 3,
     submission: {
-      submitted_at: Date("2025-03-10"),
+      submitted_at: new Date("2025-03-10"),
       score: 380,
     },
   },
@@ -117,78 +117,95 @@ const LearnerSubmission = [
 //     // the average or the keyed dictionary of scores
 // }
 
-function getLearnerData(LearnerSubmission) {
-  //array that holds results ✅
-  let outputLearner = [];
-  let learnerSet = new Set(); //https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Set/add
-  //part 1 amke sure the id matches, otherwise throw an error
-  if (AssignmentGroup.course_id !== CourseInfo.id) {
-    throw new Error(
-      `This assignment isn't for this class! Change the Course you're submitting to!`
-    );
-  }
-  //find how many unique keys, put spit out that many ✅
-  //updated with a for of loop instead,
-  for (let submission of LearnerSubmission) {
-    learnerSet.add(submission.learner_id);
-  }
-  console.log(learnerSet);
-  //learner set is now an array holding the unique keys
-  //plug in objs to outputlearner (dynamically made so any amount of learners in compensated for) 🚧
-  //also added an avg key to take in a future value ✅
-  //went ahead and just added the total possible and assignment keys
-  outputLearner = Array.from(learnerSet).map((id) => ({
-    learner_id: id,
-    avg: 0, //replace with a function
-    sum: 0,
-    totalPossible: 0,
-    assignments: {},
-  }));
-  return outputLearner;
-}
+function getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmission) {
+  try {
+    //checking ids match b/w the assignmentgroup and courseinfo
+    if (AssignmentGroup.course_id !== CourseInfo.id) {
+      throw new Error(
+        `This assignment isn't for this class! Change the Course you're submitting to!`
+      );
+    }
+    //used set to create a way to dynamically take it a random number of
+    //students, by allowing only unique student ids, couldnt really think of a way
+    //to unique catch ids besides this
+    let outputLearner = [];
+    let learnerSet = new Set();
 
-//bunch the assignment assigner function, sum function, and avg function together
-function assignmentsOfLearner(AssignmentGroup, final, LearnerSubmission) {
-  for (let i = 0; i < final.length; i++) {
-    for (let j = 0; j < AssignmentGroup.assignments.length; j++) {
-      let assignment = AssignmentGroup.assignments[j];
+    for (let submission of LearnerSubmission) {
+      learnerSet.add(submission.learner_id);
+    }
+    //working off how sets work, using forEach to create a new object into
+    //outputlearner to build into and off of as a "mock object"
+    for (let learnerId of learnerSet) {
+      outputLearner.push({
+        id: learnerId,
+        avg: 0,
+      });
+    }
 
-      // Search through all submissions to find a matching one
-      for (let k = 0; k < LearnerSubmission.length; k++) {
-        if (
-          LearnerSubmission[k].learner_id === final[i].learner_id &&
-          LearnerSubmission[k].assignment_id === assignment.id
-        ) {
-          // update scores
-          if (!final[i].assignments[assignment.id]) {
-            final[i].assignments[assignment.id] = 0;
+    //after i realized i needed to work my functions into one another,
+    //i realized i could start with created a sum and total possible variable
+    //as it goes thru a loop holding onto each spot in the iteration
+    //and uniquely calculate their matching scores and output them.
+    //this took a while since the idea of moving sides ways thru an array and
+    //"up and down" an object, completeing that object then moving onto the next index still
+    //feels awkward to me
+    for (let i = 0; i < outputLearner.length; i++) {
+      let learner = outputLearner[i];
+      let sum = 0;
+      let totalPossible = 0;
+
+      for (let j = 0; j < AssignmentGroup.assignments.length; j++) {
+        let assignment = AssignmentGroup.assignments[j];
+        let foundSubmission = false;
+        //checking if they submitted the assignment
+        for (let k = 0; k < LearnerSubmission.length; k++) {
+          let submission = LearnerSubmission[k];
+
+          if (
+            submission.learner_id === learner.id &&
+            submission.assignment_id === assignment.id
+          ) {
+            //if it was found, we converted into new date objects and
+            //then checked for late submissions
+            foundSubmission = true;
+
+            let score = submission.submission.score;
+            let dueDate = new Date(assignment.due_at);
+            let submittedDate = new Date(submission.submission.submitted_at);
+            //here we modified the score if late
+            if (submittedDate > dueDate) {
+              score -= assignment.points_possible * 0.1;
+            }
+            // assigning the score to each learner and adding to their
+            let percentage = score / assignment.points_possible;
+            learner[assignment.id] = percentage;
+            sum += score;
+            totalPossible += assignment.points_possible;
+            // theres no need to keep looping thru once it gets to the matching id,
+            break;
           }
-
-          // get their true grade
-          final[i].assignments[assignment.id] =
-            LearnerSubmission[k].submission.score / assignment.points_possible;
-
-          // add up sum and total poss to divide later
-          final[i].sum += LearnerSubmission[k].submission.score;
-          final[i].totalPossible += assignment.points_possible;
         }
       }
+      // accounting for the possibility the points possible is 0
+      //also to assign the avg to learner
+      if (totalPossible > 0) {
+        learner.avg = ((sum / totalPossible) * 100).toFixed(2) + "%";
+        //not the format wanted but if we wanted to change back to a number,
+        // i would just leave out the * 100 and not concat the %. but it just looked nicer tbh
+      }
     }
-  }
-}
 
-//make a function to sum total possible then divide final[x].sum and reassign final[x].avg that score
-function getAvg(final) {
-  for (let learner of final) {
-    if (learner.totalPossible > 0) {
-      learner.avg = (learner.sum / learner.totalPossible) * 100 + "%"; // Convert to percentage
-    }
+    return outputLearner;
+    //finally a catch statement with a
+  } catch (error) {
+    throw error;
   }
 }
-let final = getLearnerData(LearnerSubmission);
-assignmentsOfLearner(AssignmentGroup, final, LearnerSubmission);
-getAvg(final);
-console.log(final);
+//set the function value to a variable and finally logging the variable
+const Final = getLearnerData(CourseInfo, AssignmentGroup, LearnerSubmission);
+console.log(Final);
+
 // ⚠️⚠️⚠️⚠️⚠️⚠️ steps to do:
 //work on late submission functionality
 //put in a try catch
